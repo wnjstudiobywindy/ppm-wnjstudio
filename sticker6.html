@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sticker Prompt Studio – WNJ Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #c9a84c;
+  --pink-light: #e8c97a;
+  --pink-dark: #8a6a1f;
+  --purple: #c9a84c;
+  --purple-light: #e8c97a;
+  --yellow: #ffd166;
+  --mint: #c9a84c;
+  --bg: #0a0a0a;
+  --bg2: #111111;
+  --bg3: #181818;
+  --bg4: #1f1f1f;
+  --border: rgba(201,168,76,0.2);
+  --border-bright: rgba(201,168,76,0.5);
+  --text: #f0e6cc;
+  --text-dim: #8a7a5a;
+  --text-muted: #4a4030;
+  --radius: 16px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BG EFFECT */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* HEADER */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-main {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--pink-light), var(--purple-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.badge-new {
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+
+/* HERO */
+.hero {
+  padding: 50px 20px 30px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-emoji {
+  font-size: 56px;
+  margin-bottom: 16px;
+  display: block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.hero-title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+/* MAIN */
+main {
+  padding: 0 16px 80px;
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* CARD */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 14px;
+  transition: border-color 0.3s;
+}
+
+.card:hover { border-color: var(--border-bright); }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.step-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* FORM */
+.form-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 12px;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--pink);
+}
+
+.form-textarea { resize: none; height: 80px; }
+
+/* OPTIONS GRID */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.option-btn {
+  padding: 10px 12px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.option-btn:hover {
+  border-color: var(--pink);
+  color: var(--text);
+}
+
+.option-btn.selected {
+  background: rgba(255,107,157,0.12);
+  border-color: var(--pink);
+  color: var(--pink-light);
+  font-weight: 700;
+}
+
+.opt-icon { font-size: 16px; }
+
+/* COLOR PALETTE */
+.color-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.color-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.color-btn.selected {
+  border-color: #fff;
+  transform: scale(1.2);
+}
+
+.color-btn::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0;
+}
+
+.color-btn.selected::after { opacity: 1; }
+
+/* GENERATE BTN */
+.btn-generate {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, var(--pink-dark), var(--pink), var(--purple));
+  background-size: 200% 200%;
+  animation: gradShift 3s ease infinite;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes gradShift {
+  0%,100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.btn-generate::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: rotate(45deg);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* RESULT BOX */
+.result-box {
+  display: none;
+  background: var(--bg2);
+  border: 1.5px solid var(--pink);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 14px;
+  animation: fadeIn 0.4s ease;
+}
+
+.result-box.show { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.result-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--pink-light), var(--purple-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-copy {
+  padding: 7px 14px;
+  background: rgba(255,107,157,0.15);
+  border: 1px solid rgba(255,107,157,0.3);
+  color: var(--pink-light);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-copy:hover { background: rgba(255,107,157,0.25); }
+
+.result-text {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text);
+  background: var(--bg3);
+  padding: 14px;
+  border-radius: 10px;
+  white-space: pre-wrap;
+}
+
+/* PACK TABS */
+.pack-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pack-tab {
+  padding: 8px 16px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.pack-tab.active {
+  background: rgba(255,107,157,0.15);
+  border-color: var(--pink);
+  color: var(--pink-light);
+}
+
+/* AI BUTTONS */
+.ai-section {
+  display: none;
+  margin-top: 14px;
+  padding: 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.ai-section.show { display: block; }
+
+.ai-title {
+  font-size: 11px;
+  color: var(--pink);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-align: center;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.ai-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.ai-btn {
+  flex: 1;
+  padding: 12px 8px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.ai-btn:hover { transform: translateY(-2px); }
+
+/* CHAR COUNTER */
+.char-counter {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: right;
+  margin-top: 8px;
+  padding: 4px 10px;
+  background: var(--bg3);
+  border-radius: 6px;
+}
+
+.char-counter span { color: var(--pink); font-weight: 700; }
+
+/* NOTIF */
+.notif {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: linear-gradient(135deg, var(--pink-dark), var(--purple));
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 9999;
+  white-space: nowrap;
+  box-shadow: 0 8px 30px rgba(255,107,157,0.3);
+}
+
+.notif.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-muted);
+  font-size: 12px;
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+}
+
+footer a { color: var(--pink); text-decoration: none; }
+
+/* STICKER PREVIEW */
+.sticker-preview {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.sticker-chip {
+  padding: 6px 12px;
+  background: rgba(255,107,157,0.1);
+  border: 1px solid rgba(255,107,157,0.25);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--pink-light);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sticker-chip:hover, .sticker-chip.active {
+  background: rgba(255,107,157,0.2);
+  border-color: var(--pink);
+}
+
+
+/* ===== LOADING SCREEN ===== */
+#loadingScreen {
+  position: fixed;
+  inset: 0;
+  background: #050505;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  transition: opacity 0.5s ease;
+  overflow-y: auto;
+  text-align: center;
+}
+#loadingScreen.hide { opacity: 0; pointer-events: none; }
+.load-logo-icon {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, #8a6a1f, #c9a84c, #e8c97a);
+  border-radius: 24px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px; margin-bottom: 16px;
+  box-shadow: 0 0 40px rgba(201,168,76,0.3);
+  animation: loadPulse 2s ease-in-out infinite;
+}
+@keyframes loadPulse {
+  0%,100% { box-shadow: 0 0 20px rgba(201,168,76,0.3); }
+  50% { box-shadow: 0 0 50px rgba(201,168,76,0.6); }
+}
+.load-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-weight: 900;
+  color: #e8c97a; margin-bottom: 4px;
+}
+.load-sub {
+  font-size: 11px; color: #8a7a5a;
+  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px;
+}
+.load-version {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: #e8c97a; font-size: 11px; font-weight: 700;
+  padding: 3px 12px; border-radius: 20px;
+  letter-spacing: 1px; margin-bottom: 28px;
+}
+.load-card {
+  background: #111;
+  border: 1.5px solid rgba(201,168,76,0.25);
+  border-radius: 20px; padding: 24px 20px;
+  max-width: 360px; width: 100%; text-align: left;
+}
+.load-card-title {
+  font-size: 18px; font-weight: 700;
+  color: #f0e6cc; text-align: center; margin-bottom: 8px;
+}
+.load-card-desc {
+  font-size: 13px; color: #8a7a5a;
+  text-align: center; line-height: 1.6; margin-bottom: 18px;
+}
+.load-features {
+  display: flex; flex-direction: column; gap: 7px;
+  margin-bottom: 20px; padding: 14px;
+  background: rgba(201,168,76,0.04);
+  border-radius: 10px; border: 1px solid rgba(201,168,76,0.1);
+}
+.load-feature-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: #8a7a5a;
+}
+.load-feature-item::before {
+  content: '✦'; color: #c9a84c;
+  font-size: 10px; flex-shrink: 0;
+}
+.load-btn-trial {
+  width: 100%; padding: 14px;
+  background: transparent;
+  border: 1.5px solid rgba(201,168,76,0.4);
+  color: #e8c97a; font-weight: 700; font-size: 14px;
+  border-radius: 12px; cursor: pointer;
+  font-family: inherit; margin-bottom: 10px;
+}
+.load-btn-pro {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #8a6a1f, #c9a84c);
+  border: none; color: #000; font-weight: 700; font-size: 14px;
+  border-radius: 12px; cursor: pointer;
+  font-family: inherit; margin-bottom: 10px;
+}
+.load-link-kode {
+  display: block; text-align: center;
+  color: #8a7a5a; font-size: 12px; cursor: pointer;
+  background: none; border: none;
+  font-family: inherit; width: 100%; padding: 4px;
+}
+
+
+
+/* ===== STICKER AUTH ===== */
+.sticker-auth-box {
+  display: none;
+  background: #111;
+  border: 1.5px solid rgba(201,168,76,0.25);
+  border-radius: 20px;
+  padding: 24px 20px;
+  max-width: 360px;
+  width: 100%;
+  margin-top: 12px;
+}
+.sticker-auth-box.show { display: block; }
+.sticker-auth-input {
+  width: 100%; padding: 12px 14px;
+  background: #1a1a1a; border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 10px; color: #f0e6cc;
+  font-family: inherit; font-size: 14px;
+  outline: none; margin-bottom: 10px;
+}
+.sticker-auth-input:focus { border-color: #c9a84c; }
+.sticker-auth-err {
+  color: #e85555; font-size: 12px;
+  text-align: center; margin-bottom: 8px; display: none;
+}
+.sticker-auth-load {
+  color: #c9a84c; font-size: 13px;
+  text-align: center; margin-bottom: 8px; display: none;
+}
+.sticker-auth-toggle {
+  text-align: center; font-size: 13px;
+  color: #8a7a5a; cursor: pointer; margin-top: 8px;
+}
+.sticker-auth-toggle span { color: #c9a84c; }
+
+/* RANGE SLIDER */
+.range-wrap {
+  margin-bottom: 12px;
+}
+
+.range-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--pink) 0%, var(--bg4) 0%);
+  outline: none;
+  margin: 10px 0;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255,107,157,0.4);
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* PACK SIZE */
+.pack-size-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pack-size-btn {
+  padding: 12px 8px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.pack-size-btn.selected {
+  background: rgba(255,107,157,0.12);
+  border-color: var(--pink);
+  color: var(--pink-light);
+}
+
+.pack-size-num {
+  display: block;
+  font-size: 22px;
+  font-weight: 900;
+  font-family: 'Playfair Display', serif;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2px;
+}
+
+</style>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyATibPbqmeykcTsSYBr3Uwp55AfyWnXbqo",
+    authDomain: "wnjstudio-a978e.firebaseapp.com",
+    projectId: "wnjstudio-a978e",
+    storageBucket: "wnjstudio-a978e.firebasestorage.app",
+    messagingSenderId: "395665869075",
+    appId: "1:395665869075:web:10b1a9d561a2ce4505b2e6",
+    measurementId: "G-F93PNTTBMD"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  window._stickerAuth = auth;
+  window._stickerDb = db;
+
+  // Auth state listener
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      window._stickerUser = user;
+      try {
+        const userDoc = await getDoc(doc(db, "sticker_users", user.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          if (data.isPro) {
+            window._isStickerProFirebase = true;
+            document.getElementById('loadingScreen').classList.add('hide');
+            setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 600);
+            if(typeof showNotif === 'function') showNotif('👑 PRO Aktif! Selamat berkreasi!');
+          } else if (data.trialStart) {
+            const elapsed = Math.floor((Date.now() - data.trialStart) / (1000 * 60 * 60 * 24));
+            if (elapsed >= 7) {
+              document.getElementById('loadingScreen').classList.add('hide');
+              setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                if(typeof openPricing === 'function') openPricing();
+                if(typeof showNotif === 'function') showNotif('⏰ Trial habis! Upgrade ke PRO ya!');
+              }, 600);
+            } else {
+              const left = 7 - elapsed;
+              document.getElementById('loadingScreen').classList.add('hide');
+              setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 600);
+              if(typeof showNotif === 'function') showNotif('🌸 Trial aktif! ' + left + ' hari tersisa');
+            }
+          }
+        } else {
+          // New user - stay on loading screen
+        }
+        // Hide auth modal if exists
+        var authModal = document.getElementById('stickerAuthModal');
+        if (authModal) authModal.classList.remove('show');
+      } catch(e) { console.log('Firestore error:', e); }
+    } else {
+      window._stickerUser = null;
+    }
+  });
+
+  // Register with email
+  window.stickerRegister = async function() {
+    const email = document.getElementById('stickerEmail').value.trim();
+    const pass = document.getElementById('stickerPass').value.trim();
+    const errEl = document.getElementById('stickerAuthErr');
+    const loadEl = document.getElementById('stickerAuthLoad');
+    errEl.style.display = 'none';
+    loadEl.style.display = 'block';
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      await setDoc(doc(db, "sticker_users", cred.user.uid), {
+        email: email,
+        trialStart: Date.now(),
+        isPro: false,
+        createdAt: new Date().toISOString()
+      });
+      loadEl.style.display = 'none';
+      document.getElementById('loadingScreen').classList.add('hide');
+      setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 600);
+      if(typeof showNotif === 'function') showNotif('🌸 Trial 7 hari dimulai! Selamat berkreasi!');
+    } catch(e) {
+      loadEl.style.display = 'none';
+      let msg = 'Terjadi kesalahan, coba lagi.';
+      if (e.code === 'auth/email-already-in-use') msg = 'Email sudah terdaftar, silahkan login.';
+      else if (e.code === 'auth/weak-password') msg = 'Password minimal 6 karakter.';
+      else if (e.code === 'auth/invalid-email') msg = 'Format email tidak valid.';
+      errEl.textContent = msg;
+      errEl.style.display = 'block';
+    }
+  };
+
+  // Login with email
+  window.stickerLogin = async function() {
+    const email = document.getElementById('stickerEmail').value.trim();
+    const pass = document.getElementById('stickerPass').value.trim();
+    const errEl = document.getElementById('stickerAuthErr');
+    const loadEl = document.getElementById('stickerAuthLoad');
+    errEl.style.display = 'none';
+    loadEl.style.display = 'block';
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+      loadEl.style.display = 'none';
+    } catch(e) {
+      loadEl.style.display = 'none';
+      let msg = 'Login gagal, cek email & password.';
+      if (e.code === 'auth/user-not-found') msg = 'Email belum terdaftar.';
+      else if (e.code === 'auth/wrong-password') msg = 'Password salah.';
+      errEl.textContent = msg;
+      errEl.style.display = 'block';
+    }
+  };
+
+  // Google login - pakai redirect untuk mobile
+  window.stickerGoogleLogin = async function() {
+    const loadEl = document.getElementById('stickerAuthLoad');
+    if(loadEl) loadEl.style.display = 'block';
+    try {
+      await signInWithRedirect(auth, googleProvider);
+    } catch(e) {
+      if(loadEl) loadEl.style.display = 'none';
+      const errEl = document.getElementById('stickerAuthErr');
+      if(errEl) { errEl.textContent = 'Login Google gagal, coba lagi.'; errEl.style.display = 'block'; }
+    }
+  };
+
+  // Handle redirect result setelah balik dari Google
+  getRedirectResult(auth).then(async (result) => {
+    if (result && result.user) {
+      const user = result.user;
+      try {
+        const userDoc = await getDoc(doc(db, "sticker_users", user.uid));
+        if (!userDoc.exists()) {
+          await setDoc(doc(db, "sticker_users", user.uid), {
+            email: user.email,
+            trialStart: Date.now(),
+            isPro: false,
+            createdAt: new Date().toISOString()
+          });
+        }
+      } catch(e) { console.log(e); }
+    }
+  }).catch((e) => { console.log('Redirect error:', e); });
+</script>
+</head>
+<body>
+
+<!-- ===== LOADING SCREEN ===== -->
+<div id="loadingScreen">
+  <div class="load-logo-icon">🌸</div>
+  <div class="load-title">Sticker Prompt Studio</div>
+  <div class="load-sub">WNJ Studio</div>
+  <div class="load-version">V.1 PRO</div>
+
+  <div class="load-card">
+    <div class="load-card-title">★ Selamat Datang</div>
+    <div class="load-card-desc">Generate prompt sticker WhatsApp premium yang siap dijual. Mulai trial gratis atau aktivasi PRO untuk akses penuh!</div>
+    
+    <div class="load-features">
+      <div class="load-feature-item">18 Palet Warna Eksklusif</div>
+      <div class="load-feature-item">12 Gaya Ilustrasi Premium</div>
+      <div class="load-feature-item">14 Paket Ekspresi Lengkap</div>
+      <div class="load-feature-item">Estimasi Harga Jual Otomatis</div>
+      <div class="load-feature-item">Sticker Couple & Branded</div>
+    </div>
+
+    <button class="load-btn-trial" onclick="showStickerAuth('register')">⏱️ Mulai Trial 7 Hari</button>
+    <button class="load-btn-pro" onclick="showStickerAuth('login'); openPricingAfterAuth=true;">🛒 Beli PRO Permanen</button>
+    <button class="load-link-kode" onclick="showStickerAuth('login')">Sudah punya akun? Login</button>
+  </div>
+
+  <!-- AUTH FORM -->
+  <div class="sticker-auth-box" id="stickerAuthBox">
+    <div id="stickerAuthTitle" style="font-size:16px;font-weight:700;color:#f0e6cc;text-align:center;margin-bottom:6px;">✦ Daftar Trial Gratis</div>
+    <div style="font-size:12px;color:#8a7a5a;text-align:center;margin-bottom:16px;" id="stickerAuthSubtitle">Daftar untuk mulai trial 7 hari</div>
+    <div class="sticker-auth-err" id="stickerAuthErr"></div>
+    <div class="sticker-auth-load" id="stickerAuthLoad">⏳ Memproses...</div>
+    <input class="sticker-auth-input" id="stickerEmail" type="email" placeholder="Email kamu...">
+    <input class="sticker-auth-input" id="stickerPass" type="password" placeholder="Password (min 6 karakter)...">
+    <button class="load-btn-trial" id="stickerAuthBtn" onclick="handleStickerAuth()" style="margin-bottom:8px;">Mulai Trial Gratis 🎉</button>
+    <button class="load-btn-pro" onclick="window.stickerGoogleLogin && window.stickerGoogleLogin()" style="margin-bottom:8px;">🔵 Masuk dengan Google</button>
+    <div class="sticker-auth-toggle" id="stickerAuthToggle" onclick="toggleStickerAuth()">Sudah punya akun? <span>Login di sini</span></div>
+  </div>
+</div>
+
+
+<!-- HEADER -->
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">🌸</div>
+    <div class="logo-text">
+      <span class="logo-main">Sticker Prompt Studio</span>
+      <span class="logo-sub">WNJ Studio</span>
+    </div>
+  </div>
+  <span class="badge-new">✨ NEW</span>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-emoji">🎀</span>
+  <h1 class="hero-title">Buat Sticker<br><em>Super Laris</em></h1>
+  <p class="hero-desc">Generate prompt sticker WhatsApp premium yang siap dijual, hanya dalam hitungan detik!</p>
+</section>
+
+<!-- MAIN -->
+<main>
+
+  <!-- STEP 1: TEMA STICKER -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">1</div>
+      <div class="card-title">🎭 Tema & Karakter Sticker</div>
+    </div>
+    <div class="form-label">Pilih Tema Utama</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="selectOption(this,'tema')"><span class="opt-icon">👧</span> Chibi Cute</button>
+      <button class="option-btn" onclick="selectOption(this,'tema')"><span class="opt-icon">🐱</span> Hewan Lucu</button>
+      <button class="option-btn" onclick="selectOption(this,'tema')"><span class="opt-icon">🌸</span> Aesthetic Girl</button>
+      <button class="option-btn" onclick="selectOption(this,'tema')"><span class="opt-icon">👑</span> Princess Royale</button>
+      <button class="option-btn" onclick="selectOption(this,'tema')"><span class="opt-icon">🦊</span> Karakter Hewan</button>
+      <button class="option-btn" onclick="selectOption(this,'tema')"><span class="opt-icon">🤖</span> Robot Lucu</button>
+      <button class="option-btn" onclick="selectOption(this,'tema')"><span class="opt-icon">🧚</span> Fairy Fantasy</button>
+      <button class="option-btn" onclick="selectOption(this,'tema')"><span class="opt-icon">🍜</span> Food Character</button>
+    </div>
+    <div class="form-label">Nama / Deskripsi Karakter (Opsional)</div>
+    <input class="form-input" id="namaKarakter" placeholder="Contoh: Kucing oranye gendut lucu, pakai topi baret...">
+  </div>
+
+  <!-- STEP 2: EKSPRESI -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">2</div>
+      <div class="card-title">😂 Paket Ekspresi</div>
+    </div>
+    <div class="form-label">Pilih Jenis Ekspresi</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">😂</span> Ngakak & Lucu</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">🥰</span> Cinta & Sayang</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">😤</span> Drama & Emosi</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">🎉</span> Celebration</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">😴</span> Daily Life</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">💪</span> Motivasi</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">😏</span> Bucin & Gombal</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">🤑</span> Sultan & Cuan</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">😱</span> Kaget & Shock</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">🥳</span> Ultah & Perayaan</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">🙏</span> Minta Maaf</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">😎</span> Flexing & Keren</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">🤧</span> Sakit & Manja</button>
+      <button class="option-btn" onclick="selectOption(this,'ekspresi')"><span class="opt-icon">💤</span> Ngantuk & Males</button>
+    </div>
+    <div class="form-label">Teks pada Sticker (Opsional)</div>
+    <div class="sticker-preview">
+      <span class="sticker-chip" onclick="addTeks(this,'Haha 😂')">Haha 😂</span>
+      <span class="sticker-chip" onclick="addTeks(this,'Sayang kamu 🥰')">Sayang kamu 🥰</span>
+      <span class="sticker-chip" onclick="addTeks(this,'Oke siap! ✅')">Oke siap! ✅</span>
+      <span class="sticker-chip" onclick="addTeks(this,'Gak mau! 😤')">Gak mau! 😤</span>
+      <span class="sticker-chip" onclick="addTeks(this,'Semangat! 💪')">Semangat! 💪</span>
+      <span class="sticker-chip" onclick="addTeks(this,'Custom...')">+ Custom</span>
+    </div>
+    <input class="form-input" id="teksStikerInput" placeholder="Atau ketik teks custom kamu...">
+  </div>
+
+  <!-- STEP 3: GAYA VISUAL -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">3</div>
+      <div class="card-title">🎨 Gaya Visual & Warna</div>
+    </div>
+    <div class="form-label">Gaya Ilustrasi</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">🌸</span> Kawaii Japan</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">✏️</span> Line Art</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">🎨</span> Flat Design</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">💎</span> 3D Glossy</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">🖌️</span> Watercolor</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">🔥</span> Bold Cartoon</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">🎌</span> Anime Style</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">🖼️</span> Sticker Pop Art</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">🌿</span> Natural Soft</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">💻</span> Pixel Art Retro</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">✨</span> Glitter Sparkle</button>
+      <button class="option-btn" onclick="selectOption(this,'gaya')"><span class="opt-icon">🎭</span> Chibi 3D</button>
+    </div>
+    <div class="form-label">Palet Warna Dominan</div>
+    <div class="color-grid">
+      <div class="color-btn" style="background:linear-gradient(135deg,#ffb3d1,#ff6b9d)" onclick="selectColor(this,'Pastel Pink & Hot Pink')" title="Pastel Pink"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#c084fc,#9b5de5)" onclick="selectColor(this,'Purple Lavender')" title="Purple"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#93c5fd,#3b82f6)" onclick="selectColor(this,'Baby Blue & Cobalt')" title="Blue"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#86efac,#22c55e)" onclick="selectColor(this,'Mint & Emerald')" title="Green"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#fde68a,#f59e0b)" onclick="selectColor(this,'Pastel Yellow & Gold')" title="Yellow"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#fdba74,#ea580c)" onclick="selectColor(this,'Peach & Orange')" title="Orange"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#f9a8d4,#fb7185,#c084fc)" onclick="selectColor(this,'Rainbow Pastel')" title="Rainbow"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#e2e8f0,#94a3b8)" onclick="selectColor(this,'Monochrome Clean')" title="Mono"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#1a1a2e,#7b2fff,#00d4ff)" onclick="selectColor(this,'Dark Galaxy - Hitam Ungu Biru')" title="Dark Galaxy"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#ffd6c0,#ffb3a0,#fff5f0)" onclick="selectColor(this,'Peach Blossom - Peach Coral Putih')" title="Peach Blossom"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#ffffff,#f0f0f0,#d0d0d0)" onclick="selectColor(this,'Monochrome White - Putih Bersih Abu')" title="Mono White"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#00d4ff,#00b4d8,#48cae4)" onclick="selectColor(this,'Ocean Vibes - Biru Tosca Turquoise')" title="Ocean"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#c0392b,#e91e8c,#6b1a2a)" onclick="selectColor(this,'Berry Sweet - Merah Pink Maroon')" title="Berry"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#ff6b35,#f7c59f,#ffdd57)" onclick="selectColor(this,'Tropical Sunset - Oranye Merah Kuning')" title="Tropical"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#ffd6e7,#c3f0ca,#d4e8ff,#fff3b0)" onclick="selectColor(this,'Pastel Rainbow - Semua Warna Pastel')" title="Pastel Rainbow"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#0a0a0a,#c9a84c,#1a1a1a)" onclick="selectColor(this,'Black & Gold - Hitam Elegan Gold')" title="Black Gold"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#ffe4e8,#ffb7c5,#c8f0c0)" onclick="selectColor(this,'Sakura Soft - Pink Muda Putih Hijau')" title="Sakura"></div>
+      <div class="color-btn" style="background:linear-gradient(135deg,#a8d5a2,#f5f0e8,#8b6914)" onclick="selectColor(this,'Nature Fresh - Hijau Muda Cream Coklat')" title="Nature"></div>
+    </div>
+  </div>
+
+  <!-- STEP 4: UKURAN PACK -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">4</div>
+      <div class="card-title">📦 Ukuran Pack Sticker</div>
+    </div>
+    <div class="form-label">Berapa Sticker dalam 1 Pack?</div>
+    <div class="pack-size-grid">
+      <button class="pack-size-btn" onclick="selectPackSize(this,6)">
+        <span class="pack-size-num">6</span>
+        Mini Pack
+      </button>
+      <button class="pack-size-btn selected" onclick="selectPackSize(this,12)">
+        <span class="pack-size-num">12</span>
+        Standard
+      </button>
+      <button class="pack-size-btn" onclick="selectPackSize(this,20)">
+        <span class="pack-size-num">20</span>
+        Mega Pack
+      </button>
+    </div>
+    <div class="form-label">Platform Tujuan</div>
+    <div class="options-grid">
+      <button class="option-btn selected" onclick="selectOption(this,'platform')"><span class="opt-icon">💬</span> WhatsApp</button>
+      <button class="option-btn" onclick="selectOption(this,'platform')"><span class="opt-icon">📱</span> Telegram</button>
+      <button class="option-btn" onclick="selectOption(this,'platform')"><span class="opt-icon">🛍️</span> Dijual Online</button>
+      <button class="option-btn" onclick="selectOption(this,'platform')"><span class="opt-icon">🎁</span> Custom Order</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: COUPLE & BRANDED -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">5</div>
+      <div class="card-title">💑 Tipe Sticker</div>
+    </div>
+    <div class="form-label">Pilih Tipe</div>
+    <div class="options-grid">
+      <button class="option-btn selected" onclick="selectTipe(this,'Sticker Tunggal')"><span class="opt-icon">👤</span> Tunggal</button>
+      <button class="option-btn" onclick="selectTipe(this,'Sticker Couple Pasangan')"><span class="opt-icon">💑</span> Couple</button>
+      <button class="option-btn" onclick="selectTipe(this,'Sticker Branded UMKM')"><span class="opt-icon">🏷️</span> Branded</button>
+      <button class="option-btn" onclick="selectTipe(this,'Sticker Keluarga Family')"><span class="opt-icon">👨‍👩‍👧</span> Keluarga</button>
+    </div>
+    <div id="coupleSection" style="display:none;">
+      <div class="form-label">Nama Pasangan</div>
+      <div style="display:flex;gap:8px;">
+        <input class="form-input" id="nama1" placeholder="Nama kamu..." style="margin-bottom:0;">
+        <input class="form-input" id="nama2" placeholder="Nama pasangan..." style="margin-bottom:0;">
+      </div>
+    </div>
+    <div id="brandedSection" style="display:none;margin-top:12px;">
+      <div class="form-label">Nama Brand / Toko</div>
+      <input class="form-input" id="namaBrand" placeholder="Contoh: Warung Makan Bu Sari, Toko Kue Manis...">
+      <div class="form-label">Slogan / Tagline (Opsional)</div>
+      <input class="form-input" id="sloganBrand" placeholder="Contoh: Enak & Terjangkau, Pesan Sekarang!">
+    </div>
+  </div>
+
+  <!-- STEP 6: TEMA SPESIAL -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">6</div>
+      <div class="card-title">🎁 Tema Spesial (Opsional)</div>
+    </div>
+    <div class="form-label">Pilih Momen Spesial</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Idul Fitri Lebaran')"><span class="opt-icon">🕌</span> Lebaran</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Valentine Day Cinta')"><span class="opt-icon">💝</span> Valentine</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Ulang Tahun Birthday')"><span class="opt-icon">🎂</span> Ultah</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Natal Christmas')"><span class="opt-icon">🎄</span> Natal</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Tahun Baru New Year')"><span class="opt-icon">🎆</span> Tahun Baru</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Ramadan Puasa')"><span class="opt-icon">🌙</span> Ramadan</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Wisuda Graduation')"><span class="opt-icon">🎓</span> Wisuda</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Pernikahan Wedding')"><span class="opt-icon">💍</span> Wedding</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Imlek Chinese New Year')"><span class="opt-icon">🧧</span> Imlek</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Halloween Seram')"><span class="opt-icon">🎃</span> Halloween</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Hari Ibu Mothers Day')"><span class="opt-icon">💐</span> Hari Ibu</button>
+      <button class="option-btn" onclick="selectTemaSpesial(this,'Tanpa tema spesial')"><span class="opt-icon">✨</span> Umum</button>
+    </div>
+  </div>
+
+  <!-- GENERATE BUTTON -->
+  <button class="btn-generate" onclick="generateSticker()">
+    🌸 Generate Prompt Sticker Sekarang
+  </button>
+
+  <!-- RESULT BOX -->
+  <div class="result-box" id="resultBox">
+    <div class="result-header">
+      <div class="result-title">✨ Prompt Sticker Pack</div>
+      <button class="btn-copy" onclick="copyPrompt()">📋 Salin</button>
+    </div>
+
+    <!-- PACK TABS -->
+    <div class="pack-tabs" id="packTabs"></div>
+
+    <!-- MODE: VIEW / EDIT -->
+    <div id="viewMode">
+      <div class="result-text" id="resultText"></div>
+    </div>
+    <div id="editMode" style="display:none;">
+      <textarea class="result-textarea" id="resultTextarea" placeholder="Edit prompt kamu di sini..."></textarea>
+      <button class="btn-action active" style="width:100%;" onclick="saveEdit()">💾 Simpan Perubahan</button>
+    </div>
+
+    <div class="char-counter">
+      Panjang: <span id="charCount">0</span> karakter | <span id="wordCount">0</span> kata
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-btns">
+      <button class="btn-action" onclick="toggleEdit()">✏️ Edit Prompt</button>
+      <button class="btn-action" onclick="regenerate()">🔄 Regenerate</button>
+      <button class="btn-action" onclick="saveFavorit()">⭐ Favorit</button>
+      <button class="btn-action" onclick="generateHarga()">💰 Est. Harga</button>
+    </div>
+
+    <!-- AI BUTTONS -->
+    <div class="ai-section show" style="margin-top:14px;">
+      <div class="ai-title">✦ Buka Langsung di AI Image Generator</div>
+      <div class="ai-btns">
+        <button class="ai-btn" onclick="bukaAI('chatgpt')" style="background:linear-gradient(135deg,#10a37f,#1a7f64);color:#fff;">🤖 ChatGPT</button>
+        <button class="ai-btn" onclick="bukaAI('grok')" style="background:linear-gradient(135deg,#444,#222);color:#fff;border:1px solid rgba(255,255,255,0.15);">🔥 Grok</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAVORIT PANEL -->
+  <div id="favPanel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div style="font-size:12px;color:var(--pink);font-weight:700;letter-spacing:1px;">⭐ PROMPT FAVORIT</div>
+      <button onclick="clearFavorit()" style="background:none;border:1px solid rgba(232,85,85,0.3);color:#e85555;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:inherit;">🗑️ Hapus Semua</button>
+    </div>
+    <div id="favList"><div style="text-align:center;color:var(--text-muted);font-size:13px;padding:16px;">Belum ada favorit</div></div>
+  </div>
+
+  <!-- ESTIMASI HARGA & DESKRIPSI PRODUK -->
+  <div id="hargaPanel" style="display:none;margin-top:14px;">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(201,168,76,0.15);">💰</div>
+        <div class="card-title">Estimasi Harga Jual & Deskripsi Produk</div>
+      </div>
+      <div id="hargaContent"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===== PRICING POPUP ===== -->
+<div id="pricingOverlay" onclick="if(event.target===this)closePricing()">
+  <div class="pricing-box" style="max-height:90vh;overflow-y:auto;">
+    <button class="pricing-close" onclick="closePricing()">✕</button>
+
+    <!-- HEADER -->
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:44px;margin-bottom:8px;animation:float 3s ease-in-out infinite;">🌸</div>
+      <div class="pricing-title">Pilih Paket Kamu</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">Sticker Prompt Studio • WNJ Studio</div>
+    </div>
+
+    <!-- COMPARE TABLE -->
+    <div style="background:var(--bg3);border-radius:12px;padding:14px;margin-bottom:16px;">
+      <div style="font-size:11px;color:var(--pink);font-weight:700;letter-spacing:1.5px;text-align:center;margin-bottom:10px;">✦ PERBANDINGAN FITUR</div>
+      <div style="display:grid;grid-template-columns:1fr 60px 60px;gap:0;font-size:11px;">
+        <div style="color:var(--text-muted);padding:4px 0;border-bottom:1px solid rgba(255,107,157,0.1);font-weight:700;">Fitur</div>
+        <div style="text-align:center;padding:4px 0;border-bottom:1px solid rgba(255,107,157,0.1);color:var(--text-muted);font-weight:700;">Trial</div>
+        <div style="text-align:center;padding:4px 0;border-bottom:1px solid rgba(255,107,157,0.1);color:var(--pink);font-weight:700;">PRO</div>
+
+        <div style="color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);">Generate Prompt</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);">✅</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--pink);">✅</div>
+
+        <div style="color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);">Pack 6 & 12 Sticker</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);">✅</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--pink);">✅</div>
+
+        <div style="color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);">Pack 20 Sticker (Mega)</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--text-muted);">❌</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--pink);">✅</div>
+
+        <div style="color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);">Couple & Branded</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--text-muted);">❌</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--pink);">✅</div>
+
+        <div style="color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);">12 Tema Spesial</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--text-muted);">❌</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--pink);">✅</div>
+
+        <div style="color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);">Estimasi Harga Jual</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--text-muted);">❌</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--pink);">✅</div>
+
+        <div style="color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);">Edit & Favorit Prompt</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--text-muted);">❌</div>
+        <div style="text-align:center;padding:5px 0;border-bottom:1px solid rgba(255,107,157,0.06);color:var(--pink);">✅</div>
+
+        <div style="color:var(--text-dim);padding:5px 0;">ChatGPT & Grok</div>
+        <div style="text-align:center;padding:5px 0;color:var(--text-muted);">❌</div>
+        <div style="text-align:center;padding:5px 0;color:var(--pink);">✅</div>
+      </div>
+    </div>
+
+    <!-- TRIAL CARD -->
+    <div class="pricing-card" style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div>
+          <div style="font-weight:700;font-size:16px;color:var(--text);">⏱️ Trial</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Coba dulu 7 hari</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--pink-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">GRATIS</div>
+          <div style="font-size:11px;color:var(--text-dim);">7 hari</div>
+        </div>
+      </div>
+      <button class="btn-pricing-trial" onclick="closePricing(); startStickerTrial();">🌸 Mulai Trial Gratis</button>
+    </div>
+
+    <!-- PRO CARD -->
+    <div class="pricing-card popular" style="margin-bottom:12px;">
+      <div class="popular-badge">⭐ PALING LARIS</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;margin-top:8px;">
+        <div>
+          <div style="font-weight:700;font-size:16px;color:var(--text);">👑 PRO Permanen</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Akses selamanya</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;color:var(--text-muted);text-decoration:line-through;">Rp 99.000</div>
+          <div style="font-size:24px;font-weight:900;background:linear-gradient(135deg,var(--pink-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Rp 49.000</div>
+          <div style="font-size:11px;color:var(--text-dim);">selamanya ✨</div>
+        </div>
+      </div>
+      <button class="btn-pricing-pro" onclick="closePricing(); activateStickerPro();">🌸 Beli PRO Sekarang</button>
+    </div>
+
+    <!-- FOOTER NOTE -->
+    <div style="text-align:center;font-size:11px;color:var(--text-muted);line-height:1.8;">
+      Sudah punya kode? <span onclick="closePricing(); openActivation();" style="color:var(--pink);cursor:pointer;">Aktivasi di sini</span><br>
+      Order: <a href="https://wa.me/6289630486382" target="_blank" style="color:var(--pink);">WA: 089630486382</a> • <a href="#" style="color:var(--pink);">IG: @_wnjstudio_</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-size:20px;margin-bottom:8px;">🌸</div>
+  <div style="font-family:'Playfair Display',serif;font-size:14px;color:var(--text-dim);margin-bottom:6px;">Sticker Prompt Studio</div>
+  <div>by <a href="#">WNJ Studio</a> • Premium Sticker Generator</div>
+  <div style="margin-top:8px;">📱 WA: 089630486382 • 📸 @_wnjstudio_</div>
+  <div style="margin-top:6px;">© 2026 WNJ Studio • All Rights Reserved</div>
+</footer>
+
+<!-- NOTIF -->
+<div class="notif" id="notif"></div>
+
+<script>
+// ===== STATE =====
+var selectedTema = '';
+var selectedEkspresi = '';
+var selectedGaya = '';
+var selectedColor = 'Pastel Pink & Hot Pink';
+var selectedPlatform = 'WhatsApp';
+var selectedTemaSpesial = '';
+var packSize = 12;
+var generatedPrompts = [];
+var activePackIdx = 0;
+
+
+// ===== STICKER TRIAL & PRO =====
+var isStickerPro = false;
+var stickerTrialStart = null;
+
+try {
+  var stored = localStorage.getItem('stickerTrialStart');
+  if (stored) stickerTrialStart = parseInt(stored);
+  isStickerPro = localStorage.getItem('isStickerPro') === 'true';
+} catch(e) {}
+
+function startStickerTrial() {
+  if (!stickerTrialStart) {
+    stickerTrialStart = Date.now();
+    try { localStorage.setItem('stickerTrialStart', stickerTrialStart); } catch(e) {}
+  }
+  showNotif('🌸 Trial 7 hari dimulai! Selamat berkreasi!');
+  updateStickerAccess();
+}
+
+function activateStickerPro() {
+  var code = prompt('Masukkan kode aktivasi PRO:');
+  if (code === 'WNJSTICKER-PRO') {
+    isStickerPro = true;
+    try { localStorage.setItem('isStickerPro', 'true'); } catch(e) {}
+    showNotif('👑 PRO Aktif! Semua fitur terbuka!');
+    updateStickerAccess();
+  } else if (code) {
+    showNotif('❌ Kode tidak valid! Hubungi WA: 089630486382');
+  }
+}
+
+function openActivation() {
+  activateStickerPro();
+}
+
+function checkStickerTrial() {
+  if (isStickerPro) return 'pro';
+  if (!stickerTrialStart) return 'none';
+  var elapsed = Math.floor((Date.now() - stickerTrialStart) / (1000 * 60 * 60 * 24));
+  if (elapsed >= 7) return 'expired';
+  return 'trial';
+}
+
+function updateStickerAccess() {
+  var status = checkStickerTrial();
+  // Lock mega pack if not pro
+  var megaBtn = document.querySelector('[onclick*="selectPackSize(this,20)"]');
+  if (megaBtn) {
+    if (status === 'pro') {
+      megaBtn.innerHTML = '<span class="pack-size-num">20</span>Mega Pack';
+      megaBtn.onclick = function() { selectPackSize(this, 20); };
+    } else {
+      megaBtn.innerHTML = '<span class="pack-size-num">20</span>Mega 🔒';
+      megaBtn.onclick = function() { openPricing(); showNotif('Mega Pack khusus PRO! 👑'); };
+    }
+  }
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  var status = checkStickerTrial();
+  if (status === 'none') {
+    setTimeout(function() { openPricing(); }, 1500);
+  } else if (status === 'expired') {
+    showNotif('⏰ Trial habis! Upgrade ke PRO ya!');
+    setTimeout(function() { openPricing(); }, 1000);
+  }
+  updateStickerAccess();
+});
+
+// ===== STICKER AUTH MODE =====
+var _stickerAuthMode = 'register';
+var openPricingAfterAuth = false;
+
+function showStickerAuth(mode) {
+  _stickerAuthMode = mode;
+  var box = document.getElementById('stickerAuthBox');
+  box.classList.add('show');
+  if (mode === 'login') {
+    document.getElementById('stickerAuthTitle').textContent = '✦ Login ke Akun';
+    document.getElementById('stickerAuthSubtitle').textContent = 'Masuk untuk melanjutkan';
+    document.getElementById('stickerAuthBtn').textContent = 'Login Sekarang';
+    document.getElementById('stickerAuthToggle').innerHTML = 'Belum punya akun? <span>Daftar di sini</span>';
+  } else {
+    document.getElementById('stickerAuthTitle').textContent = '✦ Daftar Trial Gratis';
+    document.getElementById('stickerAuthSubtitle').textContent = 'Daftar untuk mulai trial 7 hari';
+    document.getElementById('stickerAuthBtn').textContent = 'Mulai Trial Gratis 🎉';
+    document.getElementById('stickerAuthToggle').innerHTML = 'Sudah punya akun? <span>Login di sini</span>';
+  }
+}
+
+function toggleStickerAuth() {
+  _stickerAuthMode = _stickerAuthMode === 'register' ? 'login' : 'register';
+  showStickerAuth(_stickerAuthMode);
+}
+
+function handleStickerAuth() {
+  if (_stickerAuthMode === 'register') {
+    window.stickerRegister && window.stickerRegister();
+  } else {
+    window.stickerLogin && window.stickerLogin();
+  }
+}
+
+function dismissLoading() {
+  var ls = document.getElementById('loadingScreen');
+  if (ls) {
+    ls.classList.add('hide');
+    setTimeout(function() { ls.style.display = 'none'; }, 600);
+  }
+}
+
+// ===== STICKER TRIAL & PRO =====
+var isStickerPro = false;
+var stickerTrialStart = null;
+try {
+  var stored = localStorage.getItem('stickerTrialStart');
+  if (stored) stickerTrialStart = parseInt(stored);
+  isStickerPro = localStorage.getItem('isStickerPro') === 'true';
+} catch(e) {}
+
+function startStickerTrial() {
+  if (!stickerTrialStart) {
+    stickerTrialStart = Date.now();
+    try { localStorage.setItem('stickerTrialStart', stickerTrialStart); } catch(e) {}
+  }
+  showNotif('🌸 Trial 7 hari dimulai! Selamat berkreasi!');
+}
+
+function activateStickerPro() {
+  var code = prompt('Masukkan kode aktivasi PRO:');
+  if (code === 'WNJSTICKER-PRO') {
+    isStickerPro = true;
+    try { localStorage.setItem('isStickerPro', 'true'); } catch(e) {}
+    showNotif('👑 PRO Aktif! Semua fitur terbuka!');
+  } else if (code) {
+    showNotif('❌ Kode tidak valid! Hubungi WA: 089630486382');
+  }
+}
+
+function checkStickerStatus() {
+  if (isStickerPro) return 'pro';
+  if (!stickerTrialStart) return 'none';
+  var elapsed = Math.floor((Date.now() - stickerTrialStart) / (1000 * 60 * 60 * 24));
+  if (elapsed >= 7) return 'expired';
+  return 'trial';
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  var status = checkStickerStatus();
+  if (status === 'pro' || status === 'trial') {
+    dismissLoading();
+  } else if (status === 'expired') {
+    dismissLoading();
+    setTimeout(function() {
+      showNotif('⏰ Trial habis! Upgrade ke PRO ya!');
+      openPricing();
+    }, 500);
+  }
+  // if 'none' - loading screen stays visible
+});
+
+function openPricing() {
+  document.getElementById('pricingOverlay').classList.add('show');
+}
+function closePricing() {
+  document.getElementById('pricingOverlay').classList.remove('show');
+}
+
+// ===== SELECT FUNCTIONS =====
+function selectOption(el, group) {
+  document.querySelectorAll('[onclick*="' + group + '"]').forEach(function(b) {
+    b.classList.remove('selected');
+  });
+  el.classList.add('selected');
+  if (group === 'tema') selectedTema = el.textContent.trim();
+  else if (group === 'ekspresi') selectedEkspresi = el.textContent.trim();
+  else if (group === 'gaya') selectedGaya = el.textContent.trim();
+  else if (group === 'platform') selectedPlatform = el.textContent.trim();
+}
+
+function selectColor(el, colorName) {
+  document.querySelectorAll('.color-btn').forEach(function(b) { b.classList.remove('selected'); });
+  el.classList.add('selected');
+  selectedColor = colorName;
+  showNotif('🎨 Warna: ' + colorName);
+}
+
+function selectTipe(el, tipe) {
+  document.querySelectorAll('[onclick*="selectTipe"]').forEach(function(b) {
+    b.classList.remove('selected');
+  });
+  el.classList.add('selected');
+  // Show/hide sections
+  document.getElementById('coupleSection').style.display = tipe.includes('Couple') ? 'block' : 'none';
+  document.getElementById('brandedSection').style.display = tipe.includes('Branded') ? 'block' : 'none';
+  showNotif('✅ Tipe: ' + tipe);
+  window.selectedTipe = tipe;
+}
+
+window.selectedTipe = 'Sticker Tunggal';
+
+function selectTemaSpesial(el, tema) {
+  document.querySelectorAll('[onclick*="selectTemaSpesial"]').forEach(function(b) {
+    b.classList.remove('selected');
+  });
+  if (selectedTemaSpesial === tema) {
+    selectedTemaSpesial = '';
+    showNotif('✨ Tema spesial dihapus');
+  } else {
+    el.classList.add('selected');
+    selectedTemaSpesial = tema;
+    showNotif('🎁 Tema: ' + tema);
+  }
+}
+
+function selectPackSize(el, size) {
+  document.querySelectorAll('.pack-size-btn').forEach(function(b) { b.classList.remove('selected'); });
+  el.classList.add('selected');
+  packSize = size;
+  showNotif('📦 Pack ' + size + ' sticker dipilih!');
+}
+
+function addTeks(el, teks) {
+  document.querySelectorAll('.sticker-chip').forEach(function(c) { c.classList.remove('active'); });
+  el.classList.add('active');
+  if (teks !== 'Custom...') {
+    document.getElementById('teksStikerInput').value = teks;
+  } else {
+    document.getElementById('teksStikerInput').focus();
+  }
+}
+
+// ===== GENERATE =====
+function generateSticker() {
+  var tema = selectedTema || '👧 Chibi Cute';
+  var ekspresi = selectedEkspresi || '😂 Ngakak & Lucu';
+  var gaya = selectedGaya || '🌸 Kawaii Japan';
+  var karakter = document.getElementById('namaKarakter').value.trim();
+  var teks = document.getElementById('teksStikerInput').value.trim();
+  var color = selectedColor;
+  var platform = selectedPlatform;
+
+  var karakterDesc = karakter ? karakter : 'karakter ' + tema.replace(/[^\w\s]/gi, '').trim().toLowerCase();
+  var tipeSticker = window.selectedTipe || 'Sticker Tunggal';
+  var nama1 = document.getElementById('nama1') ? document.getElementById('nama1').value.trim() : '';
+  var nama2 = document.getElementById('nama2') ? document.getElementById('nama2').value.trim() : '';
+  var namaBrand = document.getElementById('namaBrand') ? document.getElementById('namaBrand').value.trim() : '';
+  var sloganBrand = document.getElementById('sloganBrand') ? document.getElementById('sloganBrand').value.trim() : '';
+
+  if (tipeSticker.includes('Couple') && nama1 && nama2) {
+    karakterDesc = 'pasangan couple ' + karakterDesc + ', karakter pertama mewakili ' + nama1 + ' dan karakter kedua mewakili ' + nama2;
+  } else if (tipeSticker.includes('Branded') && namaBrand) {
+    karakterDesc = karakterDesc + ' sebagai maskot brand ' + namaBrand + (sloganBrand ? ' dengan tagline "' + sloganBrand + '"' : '');
+  } else if (tipeSticker.includes('Keluarga')) {
+    karakterDesc = 'karakter keluarga lengkap (ayah, ibu, anak) ' + karakterDesc;
+  }
+
+  // Generate prompts berdasarkan pack size
+  var stickerCount = packSize;
+  var expressions = [
+    'tertawa lepas, mata berbentuk lengkung gembira',
+    'pipi merona merah, ekspresi malu-malu',
+    'marah dengan asap keluar dari kepala, alis tebal',
+    'tidur dengan ZZZ mengambang di atas',
+    'melompat kegirangan dengan bintang berkilau',
+    'menangis lebay dengan air mata besar',
+    'jatuh cinta dengan mata berbentuk hati',
+    'bingung dengan tanda tanya di kepala',
+    'semangat mengepalkan tangan ke udara',
+    'malu bersembunyi di balik tangan',
+    'shock mulut terbuka lebar',
+    'cool memakai kacamata hitam',
+    'lapar melihat makanan dengan mata berbinar',
+    'mengantuk menguap dengan mata setengah terbuka',
+    'senang berputar dengan kembang api',
+    'sedih dengan awan mendung di atas kepala',
+    'sombong dengan pose angkat dagu',
+    'nervous berkeringat dengan senyum tegang',
+    'excited melompat-lompat',
+    'minta maaf dengan tangan mengatup'
+  ];
+
+  generatedPrompts = [];
+  var stickersPerPrompt = Math.ceil(stickerCount / 4);
+
+  for (var p = 0; p < 4; p++) {
+    var startIdx = p * stickersPerPrompt;
+    var endIdx = Math.min(startIdx + stickersPerPrompt, stickerCount);
+    var promptExpressions = expressions.slice(startIdx, endIdx);
+    
+    var temaSpesialTxt = selectedTemaSpesial && selectedTemaSpesial !== 'Tanpa tema spesial' ? selectedTemaSpesial : '';
+    var prompt = 'Buat ' + (endIdx - startIdx) + ' stiker WhatsApp dalam 1 set dengan karakter ' + karakterDesc + '.\n\n';
+    if (tipeSticker.includes('Branded') && namaBrand) {
+      prompt += '🏷️ BRANDED STICKER:\n';
+      prompt += '• Nama Brand: ' + namaBrand + '\n';
+      if (sloganBrand) prompt += '• Tagline: ' + sloganBrand + '\n';
+      prompt += '• Tambahkan logo/nama brand di sudut stiker secara subtle\n\n';
+    }
+    if (temaSpesialTxt) prompt += '🎁 TEMA SPESIAL: ' + temaSpesialTxt + '\n• Sesuaikan semua ekspresi dan elemen dekorasi dengan tema ' + temaSpesialTxt + '\n• Tambahkan elemen khas tema (ornamen, warna tema, simbol tema)\n\n';
+    prompt += '🎨 SPESIFIKASI TEKNIS:\n';
+    prompt += '• Ukuran: 512x512 px per stiker\n';
+    prompt += '• Format: PNG transparan (background transparan)\n';
+    prompt += '• Style: ' + gaya.replace(/[^\w\s]/gi, '').trim() + '\n';
+    prompt += '• Palet warna: ' + color + '\n';
+    prompt += '• Outline tebal 3-4px warna hitam untuk kejelasan\n';
+    prompt += '• Resolusi tinggi, detail tajam\n\n';
+    
+    prompt += '🌸 DESKRIPSI KARAKTER:\n';
+    prompt += '• Karakter: ' + karakterDesc + '\n';
+    prompt += '• Tema: ' + tema.replace(/[^\w\s]/gi, '').trim() + '\n';
+    prompt += '• Gaya: Super cute, ekspresif, penuh karakter\n';
+    if (teks) prompt += '• Teks: Tambahkan teks "' + teks + '" dengan font rounded lucu\n\n';
+    else prompt += '\n';
+
+    prompt += '😂 EKSPRESI YANG DIBUAT:\n';
+    promptExpressions.forEach(function(exp, i) {
+      prompt += (startIdx + i + 1) + '. ' + exp + '\n';
+    });
+
+    prompt += '\n💡 TIPS KUALITAS:\n';
+    prompt += '• Setiap stiker harus berdiri sendiri (no overlap)\n';
+    prompt += '• Ekspresi harus jelas terbaca dari jauh\n';
+    prompt += '• Cocok untuk platform ' + platform.replace(/[^\w\s]/gi, '').trim() + '\n';
+    prompt += '• Cute, marketable, dan laris dijual!\n';
+
+    generatedPrompts.push(prompt);
+  }
+
+  // Render pack tabs
+  var tabsHtml = '';
+  var packNames = ['Pack A', 'Pack B', 'Pack C', 'Pack D'];
+  for (var i = 0; i < 4; i++) {
+    tabsHtml += '<button class="pack-tab ' + (i === 0 ? 'active' : '') + '" onclick="switchPack(' + i + ',this)">' + packNames[i] + '</button>';
+  }
+  document.getElementById('packTabs').innerHTML = tabsHtml;
+
+  // Show first prompt
+  activePackIdx = 0;
+  var rb = document.getElementById('resultBox');
+  rb.classList.add('show');
+  updateResult(0);
+  rb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  showNotif('🌸 ' + stickerCount + ' prompt sticker berhasil dibuat! ✨');
+}
+
+function switchPack(idx, el) {
+  activePackIdx = idx;
+  document.querySelectorAll('.pack-tab').forEach(function(b) { b.classList.remove('active'); });
+  el.classList.add('active');
+  updateResult(idx);
+}
+
+function updateResult(idx) {
+  var txt = generatedPrompts[idx] || '';
+  document.getElementById('resultText').textContent = txt;
+  document.getElementById('charCount').textContent = txt.length.toLocaleString('id-ID');
+  document.getElementById('wordCount').textContent = txt.trim().split(/\s+/).filter(Boolean).length.toLocaleString('id-ID');
+}
+
+// ===== COPY =====
+function copyPrompt() {
+  var txt = generatedPrompts[activePackIdx] || '';
+  if (!txt) return;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt).then(function() {
+      showNotif('📋 Pack ' + (activePackIdx + 1) + ' berhasil disalin!');
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showNotif('📋 Pack ' + (activePackIdx + 1) + ' berhasil disalin!');
+  }
+}
+
+// ===== BUKA AI =====
+function bukaAI(platform) {
+  var txt = generatedPrompts[activePackIdx] || '';
+  if (!txt) { showNotif('Generate prompt dulu ya! 😊'); return; }
+  var encoded = encodeURIComponent(txt);
+  var url = '';
+  if (platform === 'chatgpt') url = 'https://chat.openai.com/?q=' + encoded;
+  else if (platform === 'gemini') url = 'https://gemini.google.com/app?q=' + encoded;
+  else if (platform === 'grok') url = 'https://grok.com/?q=' + encoded;
+  window.open(url, '_blank');
+  showNotif('🚀 Membuka ' + platform + '...');
+}
+
+// ===== NOTIF =====
+function showNotif(msg) {
+  var n = document.getElementById('notif');
+  n.textContent = msg;
+  n.classList.add('show');
+  setTimeout(function() { n.classList.remove('show'); }, 2500);
+}
+
+
+// ===== EDIT PROMPT =====
+var isEditMode = false;
+
+function toggleEdit() {
+  isEditMode = !isEditMode;
+  var viewMode = document.getElementById('viewMode');
+  var editMode = document.getElementById('editMode');
+  var txt = generatedPrompts[activePackIdx] || '';
+  if (isEditMode) {
+    document.getElementById('resultTextarea').value = txt;
+    viewMode.style.display = 'none';
+    editMode.style.display = 'block';
+    showNotif('✏️ Mode edit aktif!');
+  } else {
+    viewMode.style.display = 'block';
+    editMode.style.display = 'none';
+  }
+}
+
+function saveEdit() {
+  var newTxt = document.getElementById('resultTextarea').value;
+  generatedPrompts[activePackIdx] = newTxt;
+  document.getElementById('resultText').textContent = newTxt;
+  document.getElementById('charCount').textContent = newTxt.length.toLocaleString('id-ID');
+  document.getElementById('wordCount').textContent = newTxt.trim().split(/\s+/).filter(Boolean).length.toLocaleString('id-ID');
+  isEditMode = false;
+  document.getElementById('viewMode').style.display = 'block';
+  document.getElementById('editMode').style.display = 'none';
+  showNotif('💾 Prompt berhasil disimpan!');
+}
+
+// ===== REGENERATE =====
+function regenerate() {
+  showNotif('🔄 Regenerate...');
+  setTimeout(function() {
+    generateSticker();
+  }, 300);
+}
+
+// ===== FAVORIT =====
+var favoritList = [];
+try { favoritList = JSON.parse(localStorage.getItem('wnjStickerFav') || '[]'); } catch(e) { favoritList = []; }
+
+function saveFavorit() {
+  var txt = generatedPrompts[activePackIdx] || '';
+  if (!txt) { showNotif('Generate prompt dulu ya! 😊'); return; }
+  var name = prompt('Nama favorit ini:');
+  if (!name) return;
+  var item = {
+    id: Date.now(),
+    name: name,
+    prompt: txt,
+    time: new Date().toLocaleDateString('id-ID')
+  };
+  favoritList.unshift(item);
+  if (favoritList.length > 20) favoritList = favoritList.slice(0, 20);
+  try { localStorage.setItem('wnjStickerFav', JSON.stringify(favoritList)); } catch(e) {}
+  renderFavorit();
+  showNotif('⭐ Disimpan ke favorit: ' + name);
+}
+
+function renderFavorit() {
+  var fp = document.getElementById('favPanel');
+  var fl = document.getElementById('favList');
+  if (!fp || !fl) return;
+  fp.classList.add('show');
+  if (favoritList.length === 0) {
+    fl.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:16px;">Belum ada favorit</div>';
+    return;
+  }
+  fl.innerHTML = favoritList.map(function(item, i) {
+    return '<div class="fav-item">' +
+      '<div class="fav-item-info" onclick="loadFavorit(' + i + ')">' +
+        '<div class="fav-item-name">⭐ ' + item.name + '</div>' +
+        '<div class="fav-item-time">📅 ' + item.time + '</div>' +
+      '</div>' +
+      '<button class="fav-del-btn" onclick="deleteFavorit(' + i + ')">🗑️</button>' +
+    '</div>';
+  }).join('');
+}
+
+function loadFavorit(idx) {
+  var item = favoritList[idx];
+  if (!item) return;
+  generatedPrompts[activePackIdx] = item.prompt;
+  document.getElementById('resultText').textContent = item.prompt;
+  document.getElementById('resultBox').classList.add('show');
+  showNotif('⭐ Favorit "' + item.name + '" dimuat!');
+}
+
+function deleteFavorit(idx) {
+  favoritList.splice(idx, 1);
+  try { localStorage.setItem('wnjStickerFav', JSON.stringify(favoritList)); } catch(e) {}
+  renderFavorit();
+  showNotif('🗑️ Favorit dihapus!');
+}
+
+function clearFavorit() {
+  if (!confirm('Hapus semua favorit?')) return;
+  favoritList = [];
+  try { localStorage.removeItem('wnjStickerFav'); } catch(e) {}
+  renderFavorit();
+  showNotif('🗑️ Semua favorit dihapus!');
+}
+
+// Load favorit on startup
+document.addEventListener('DOMContentLoaded', function() {
+  if (favoritList.length > 0) renderFavorit();
+});
+
+// ===== ESTIMASI HARGA & DESKRIPSI =====
+function generateHarga() {
+  var size = packSize;
+  var tipe = window.selectedTipe || 'Sticker Tunggal';
+  var tema = selectedTema || 'Chibi Cute';
+  var temaSpesial = selectedTemaSpesial && selectedTemaSpesial !== 'Tanpa tema spesial' ? selectedTemaSpesial : '';
+
+  // Hitung estimasi harga
+  var hargaMin, hargaMax, hargaReseller;
+  if (size <= 6) { hargaMin = 5000; hargaMax = 10000; hargaReseller = 3000; }
+  else if (size <= 12) { hargaMin = 10000; hargaMax = 20000; hargaReseller = 7000; }
+  else { hargaMin = 20000; hargaMax = 35000; hargaReseller = 15000; }
+
+  if (tipe.includes('Branded')) { hargaMin *= 2; hargaMax *= 2; }
+  if (temaSpesial) { hargaMin = Math.round(hargaMin * 1.3); hargaMax = Math.round(hargaMax * 1.3); }
+
+  var namaPackStr = temaSpesial ? temaSpesial + ' ' : '';
+  var deskripsi = '🌸 STICKER PACK ' + namaPackStr.toUpperCase() + tema.replace(/[^\w\s]/gi,'').trim().toUpperCase() + '\n\n';
+  deskripsi += '✨ ' + size + ' Sticker Premium untuk WhatsApp\n';
+  deskripsi += '🎨 Gaya: ' + (selectedGaya || 'Kawaii') + '\n';
+  deskripsi += '📦 Format: PNG Transparan 512x512px\n';
+  if (tipe.includes('Couple')) deskripsi += '💑 Edisi Couple - Bisa Custom Nama!\n';
+  if (tipe.includes('Branded')) deskripsi += '🏷️ Branded - Include Logo Brand!\n';
+  deskripsi += '\n🛍️ CARA ORDER:\n';
+  deskripsi += 'Chat WA: 089630486382\n';
+  deskripsi += 'Instagram: @_wnjstudio_\n\n';
+  deskripsi += '⚡ Proses 1x24 jam\n';
+  deskripsi += '✅ Revisi 1x gratis\n';
+  deskripsi += '🎁 Free ongkir (digital)';
+
+  var html = '<div style="margin-bottom:16px;">';
+  html += '<div style="font-size:11px;color:var(--text-dim);font-weight:700;letter-spacing:1px;margin-bottom:10px;">💰 ESTIMASI HARGA JUAL</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">';
+  html += '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">HARGA MIN</div>';
+  html += '<div style="font-size:16px;font-weight:900;color:var(--pink-light);">Rp' + hargaMin.toLocaleString('id-ID') + '</div></div>';
+  html += '<div style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:12px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">HARGA IDEAL</div>';
+  html += '<div style="font-size:16px;font-weight:900;color:var(--pink);">Rp' + Math.round((hargaMin+hargaMax)/2).toLocaleString('id-ID') + '</div></div>';
+  html += '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">HARGA MAX</div>';
+  html += '<div style="font-size:16px;font-weight:900;color:var(--pink-light);">Rp' + hargaMax.toLocaleString('id-ID') + '</div></div>';
+  html += '</div>';
+  html += '<div style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:16px;">💡 Harga reseller: Rp' + hargaReseller.toLocaleString('id-ID') + ' | Margin: ' + Math.round(((hargaMin-hargaReseller)/hargaMin)*100) + '%</div>';
+  html += '</div>';
+  html += '<div style="font-size:11px;color:var(--text-dim);font-weight:700;letter-spacing:1px;margin-bottom:10px;">📝 DESKRIPSI PRODUK SIAP PAKAI</div>';
+  html += '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:12px;line-height:1.8;white-space:pre-wrap;color:var(--text);margin-bottom:10px;">' + deskripsi + '</div>';
+  html += '<button onclick="copyDeskripsi()" style="width:100%;padding:10px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--pink-light);border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;">📋 Salin Deskripsi Produk</button>';
+  
+  document.getElementById('hargaContent').innerHTML = html;
+  document.getElementById('hargaPanel').style.display = 'block';
+  document.getElementById('hargaPanel').scrollIntoView({behavior:'smooth', block:'nearest'});
+  window._lastDeskripsi = deskripsi;
+  showNotif('💰 Estimasi harga & deskripsi siap! 🔥');
+}
+
+function copyDeskripsi() {
+  var txt = window._lastDeskripsi || '';
+  if (!txt) return;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt).then(function(){ showNotif('📋 Deskripsi berhasil disalin!'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showNotif('📋 Deskripsi berhasil disalin!');
+  }
+}
+
+// ===== RANGE SLIDER UPDATE =====
+document.querySelectorAll('.range-slider').forEach(function(slider) {
+  slider.addEventListener('input', function() {
+    var val = (this.value - this.min) / (this.max - this.min) * 100;
+    this.style.background = 'linear-gradient(to right, var(--pink) ' + val + '%, var(--bg4) ' + val + '%)';
+  });
+});
+
+// Default selections
+document.addEventListener('DOMContentLoaded', function() {
+  // Default color selected
+  document.querySelector('.color-btn').classList.add('selected');
+  // Default platform selected  
+  document.querySelector('[onclick*="platform"]').classList.add('selected');
+});
+</script>
+</body>
+</html>
