@@ -5669,13 +5669,17 @@ function handleAuthSubmit() {
  }
 }
 
-// Show auth modal after loading screen dismisses
+// Show auth modal after loading screen dismisses - only once
+var _dismissCalled = false;
 const _origDismiss = dismissLoading;
 dismissLoading = function() {
  _origDismiss();
+ if (!_dismissCalled) {
+ _dismissCalled = true;
  setTimeout(() => {
  if (!window._currentUser) showAuthModal();
  }, 700);
+ }
 };
 </script>
 </body>
