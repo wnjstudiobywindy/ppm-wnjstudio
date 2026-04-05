@@ -2314,7 +2314,12 @@ footer {
  }
  // Hide auth modal if showing
  document.getElementById('authModal').classList.remove('show');
- } catch(e) { console.log('Firestore error:', e); }
+ // Dismiss loading screen for logged-in users
+ if (typeof dismissLoading === 'function') dismissLoading();
+ } catch(e) { 
+ console.log('Firestore error:', e);
+ if (typeof dismissLoading === 'function') dismissLoading();
+ }
  } else {
  window._currentUser = null;
  // Show auth modal only if loading screen is done
