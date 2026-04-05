@@ -2378,12 +2378,6 @@ footer {
 </head>
 <body>
 <script>
-// Passive scroll for better performance on mobile
-['touchstart','touchmove','wheel'].forEach(function(e){
-  document.addEventListener(e, function(){}, {passive: true});
-});
-</script>
-<script>
 // Passive scroll for better performance
 document.addEventListener('touchstart', function(){}, {passive: true});
 document.addEventListener('touchmove', function(){}, {passive: true});
