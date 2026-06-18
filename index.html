@@ -27,12 +27,19 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
+html {
+  overflow-x: hidden;
+  height: auto;
+}
+
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  overflow-x: hidden;
+  height: auto;
+  overscroll-behavior-y: auto;
+  touch-action: pan-y;
 }
 
 /* ========== LOADING SCREEN ========== */
@@ -4407,6 +4414,26 @@ function generatePrompt() {
 
 // COPY DUAL LANG
 function copyPromptLang(lang) {
+  const id = lang === 'id' ? 'resultTextID' : 'resultTextEN';
+  const btnId = lang === 'id' ? 'btnCopyID' : 'btnCopyEN';
+  const text = document.getElementById(id).textContent;
+  const btn = document.getElementById(btnId);
+  const label = lang === 'id' ? '✅ Tersalin!' : '✅ Copied!';
+  const orig = lang === 'id' ? '📋 Salin' : '📋 Copy';
+
+  // Method 1: Modern clipboard API
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = label;
+      btn.classList.add('copied');
+      showNotif(lang === 'id' ? '✦ Prompt berhasil disalin!' : '✦ Prompt copied!');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    }).catch(() => fallbackCopy(text, btn, label, orig, lang));
+  } else {
+    // Method 2: Fallback untuk browser lama / HTTP
+    fallbackCopy(text, btn, label, orig, lang);
+  }
+}
 
 function bukaAI(platform) {
   if (!isPro) { openModal(); showNotif("Fitur ini khusus PRO! 👑"); return; }
@@ -4546,26 +4573,6 @@ function copyBundle() {
     document.execCommand("copy");
     document.body.removeChild(ta);
     showNotif("📋 Variasi " + (activeBundleIdx+1) + " disalin!");
-  }
-}
-  const id = lang === 'id' ? 'resultTextID' : 'resultTextEN';
-  const btnId = lang === 'id' ? 'btnCopyID' : 'btnCopyEN';
-  const text = document.getElementById(id).textContent;
-  const btn = document.getElementById(btnId);
-  const label = lang === 'id' ? '✅ Tersalin!' : '✅ Copied!';
-  const orig = lang === 'id' ? '📋 Salin' : '📋 Copy';
-
-  // Method 1: Modern clipboard API
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = label;
-      btn.classList.add('copied');
-      showNotif(lang === 'id' ? '✦ Prompt berhasil disalin!' : '✦ Prompt copied!');
-      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
-    }).catch(() => fallbackCopy(text, btn, label, orig, lang));
-  } else {
-    // Method 2: Fallback untuk browser lama / HTTP
-    fallbackCopy(text, btn, label, orig, lang);
   }
 }
 
