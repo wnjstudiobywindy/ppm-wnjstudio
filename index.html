@@ -2154,6 +2154,7 @@ footer {
   justify-content: center;
   padding: 32px 24px;
   text-align: center;
+  overflow-y: auto;
 }
 #trialExpiredOverlay.show { display: flex; }
 .trial-exp-box {
@@ -2193,6 +2194,7 @@ footer {
   align-items: center;
   justify-content: center;
   padding: 24px;
+  overflow-y: auto;
 }
 #authModal.show { display: flex; }
 .auth-box {
@@ -2387,8 +2389,8 @@ footer {
     <div class="trial-exp-icon">⏰</div>
     <div class="trial-exp-title">Trial 7 Hari Habis!</div>
     <div class="trial-exp-desc">Masa trial kamu sudah berakhir. Upgrade ke PRO untuk terus menggunakan semua fitur Pixel Prompt Master tanpa batas!</div>
-    <button class="trial-exp-btn" onclick="document.getElementById('trialExpiredOverlay').classList.remove('show'); openModal();">🛒 Upgrade ke PRO Sekarang</button>
-    <button class="trial-exp-btn2" onclick="document.getElementById('trialExpiredOverlay').classList.remove('show'); openModal();">Saya punya kode aktivasi</button>
+    <button class="trial-exp-btn" onclick="document.getElementById('trialExpiredOverlay').classList.remove('show'); document.body.style.overflow = ''; openModal();">🛒 Upgrade ke PRO Sekarang</button>
+    <button class="trial-exp-btn2" onclick="document.getElementById('trialExpiredOverlay').classList.remove('show'); document.body.style.overflow = ''; openModal();">Saya punya kode aktivasi</button>
   </div>
 </div>
 
@@ -4624,10 +4626,14 @@ function activatePro() {
 
 function activateProSuccess() {
   isPro = true;
+  document.body.style.overflow = '';
   document.getElementById('watermark').classList.add('hidden');
   document.getElementById('proBadgeHeader').classList.add('visible');
   document.getElementById('trialTimer').style.display = 'none';
   document.getElementById('btnAktivasiHeader').style.display = 'none';
+  // Sembunyikan trial expired overlay jika masih tampil
+  var teo = document.getElementById('trialExpiredOverlay');
+  if (teo) teo.classList.remove('show');
   showNotif('🎉 PRO Aktif! Watermark dihapus! Selamat bestie! 👑');
 }
 
