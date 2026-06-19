@@ -5565,6 +5565,12 @@ ${instruksi}
   var wmUkuranEl = document.querySelector('#wmUkuran .selected');
   var wmPosisi = wmPosisiEl ? wmPosisiEl.textContent.trim() : 'Bawah Kanan';
   var wmUkuran = wmUkuranEl ? wmUkuranEl.textContent.trim() : 'Sedang';
+  var posisiMap = {
+    'Atas Kiri':'Top Left', 'Atas Tengah':'Top Center', 'Atas Kanan':'Top Right',
+    'Tengah Kiri':'Center Left', 'Tengah':'Center', 'Tengah Kanan':'Center Right',
+    'Bawah Kiri':'Bottom Left', 'Bawah Tengah':'Bottom Center', 'Bawah Kanan':'Bottom Right'
+  };
+  var wmPosisiOut = isEN ? (posisiMap[wmPosisi] || wmPosisi) : wmPosisi;
   var ukuranMap = {'🔹 Kecil': isEN ? 'small (10-12px)' : 'kecil (10-12px)', '🔷 Sedang': isEN ? 'medium (14-16px)' : 'sedang (14-16px)', '🔶 Besar': isEN ? 'large (18-20px)' : 'besar (18-20px)'};
   var ukuranVal = ukuranMap[wmUkuran] || 'sedang';
 
@@ -5573,14 +5579,14 @@ ${instruksi}
       ? '\n===============================\n' +
         'CUSTOM WATERMARK (PRO)\n' +
         '===============================\n' +
-        '* WAJIB tambahkan watermark di posisi: ' + wmPosisi + '\n' +
-        '* Isi watermark: ' + wmMedsos + '\n' +
-        '* Ukuran font: ' + ukuranVal + '\n' +
-        '* Gaya: semi-transparan, elegan, tidak mengganggu\n'
+        '* MUST add watermark at position: ' + wmPosisiOut + '\n' +
+        '* Watermark content: ' + wmMedsos + '\n' +
+        '* Font size: ' + ukuranVal + '\n' +
+        '* Style: semi-transparent, elegant, non-intrusive\n'
       : '\n===============================\n' +
         'WATERMARK CUSTOM (PRO)\n' +
         '===============================\n' +
-        '* WAJIB tambahkan watermark di posisi: ' + wmPosisi + '\n' +
+        '* WAJIB tambahkan watermark di posisi: ' + wmPosisiOut + '\n' +
         '* Isi watermark: ' + wmMedsos + '\n' +
         '* Ukuran font: ' + ukuranVal + '\n' +
         '* Gaya: semi-transparan, elegan, tidak mengganggu\n';
@@ -5590,8 +5596,8 @@ ${instruksi}
       ? '\n===============================\n' +
         'MANDATORY WATERMARK (TRIAL)\n' +
         '===============================\n' +
-        '* WAJIB tambahkan teks "WNJ Studio" di sudut kanan bawah\n' +
-        '* Ukuran kecil (10-12px), semi-transparan\n'
+        '* MUST add the text "WNJ Studio" at the bottom right corner\n' +
+        '* Small size (10-12px), semi-transparent\n'
       : '\n===============================\n' +
         'WATERMARK WAJIB (TRIAL)\n' +
         '===============================\n' +
